@@ -16,6 +16,7 @@ program
   .option('-s, --subdomain [value]', 'Your Slack subdomain')
   .option('-e, --email [value]', 'Admin email address')
   .option('-p, --password [value]', 'Password for admin email')
+  .option('-r, --remove', 'remove the YAML emoji pack')
   .option('-y, --pack [value]', 'YAML emoji pack')
   .parse(process.argv);
 
@@ -28,6 +29,7 @@ co(function *() {
   var pack = yield Pack.get(user.pack);
   pack = clean(pack);
   user.emojis = pack.emojis;
+  user.remove=program.remove;
   var slack = new Slack(user, program.debug);
   yield slack.import();
   process.exit();
